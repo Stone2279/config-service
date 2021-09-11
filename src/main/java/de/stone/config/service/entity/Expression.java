@@ -1,22 +1,31 @@
 package de.stone.config.service.entity;
 
+import javax.persistence.*;
 import javax.xml.xpath.XPathConstants;
 import java.util.Objects;
 
+@Entity
+@Table(name="EXPRESSION")
 public class Expression {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name="EXP")
+    @Lob
     private String expression;
 
+    @Column(name="EXPECTED_VALUE")
     private String expectedValue;
 
-    private XPathConstants expectedType;
+    @Enumerated(EnumType.STRING)
+    private ExpectedType expectedType;
 
     public Expression() {
     }
 
-    public Expression(String expression, String expectedValue, XPathConstants expectedType) {
+    public Expression(String expression, String expectedValue, ExpectedType expectedType) {
         this.expression = expression;
         this.expectedValue = expectedValue;
         this.expectedType = expectedType;
@@ -46,11 +55,11 @@ public class Expression {
         this.expectedValue = expectedValue;
     }
 
-    public XPathConstants getExpectedType() {
+    public ExpectedType getExpectedType() {
         return expectedType;
     }
 
-    public void setExpectedType(XPathConstants expectedType) {
+    public void setExpectedType(ExpectedType expectedType) {
         this.expectedType = expectedType;
     }
 

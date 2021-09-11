@@ -1,23 +1,40 @@
 package de.stone.config.service.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name="DOCUMENT_MAPPING")
 public class DocumentMapping {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "DOCUMENT_NAME", length = 512, nullable = false)
     private String documentName;
 
+    @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EXPRESSION_1", referencedColumnName = "id")
     private Expression expression1;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EXPRESSION_2", referencedColumnName = "id")
     private Expression expression2;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EXPRESSION_3", referencedColumnName = "id")
     private Expression expression3;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EXPRESSION_4", referencedColumnName = "id")
     private Expression expression4;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "EXPRESSION_5", referencedColumnName = "id")
     private Expression expression5;
 
     public DocumentMapping() {
