@@ -1,2 +1,4 @@
 /.idea/
 /config-service.iml
+/target/
+/db/data.mv.db
