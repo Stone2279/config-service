@@ -8,13 +8,15 @@ import java.util.Objects;
 public class DocumentMapping {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documentmapping_id_seq")
+    @SequenceGenerator(name = "documentmapping_id_seq", sequenceName = "documentmapping_id_seq")
     private Long id;
 
     @Column(name = "DOCUMENT_NAME", length = 512, nullable = false)
     private String documentName;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="DOCUMENT_TYPE")
     private DocumentType documentType;
 
     @OneToOne(cascade = CascadeType.ALL)

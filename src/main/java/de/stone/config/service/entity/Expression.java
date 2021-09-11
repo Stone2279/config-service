@@ -9,7 +9,8 @@ import java.util.Objects;
 public class Expression {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expression_id_seq")
+    @SequenceGenerator(name = "expression_id_seq", sequenceName = "expression_id_seq")
     private Long id;
 
     @Column(name="EXP")
@@ -20,6 +21,7 @@ public class Expression {
     private String expectedValue;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="EXPECTED_TYPE")
     private ExpectedType expectedType;
 
     public Expression() {

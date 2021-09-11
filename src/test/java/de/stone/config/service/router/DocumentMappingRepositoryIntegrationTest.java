@@ -35,7 +35,7 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void findByDocumentName() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books");
+        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
         DocumentMapping book = books.get(0);
@@ -71,7 +71,7 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void updateDocumentMapping() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books");
+        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
         DocumentMapping book = books.get(0);
@@ -81,7 +81,7 @@ class DocumentMappingRepositoryIntegrationTest {
 
         repository.saveAndFlush(book);
 
-        books = repository.findByDocumentName("Best Books");
+        books = repository.findByDocumentName("Best Books").get();
         assertEquals(1, books.size());
 
         book = books.get(0);
@@ -93,12 +93,12 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void deleteDocumentMapping() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books");
+        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
         repository.delete(books.get(0));
 
-        books = repository.findByDocumentName("Books");
+        books = repository.findByDocumentName("Books").get();
         assertEquals(0, books.size());
     }
 

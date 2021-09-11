@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "cf4767ca-7832-4dea-a708-5a9a16378f95",
+		"name": "config-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Mappings By Name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/mappings/Books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mappings",
+						"Books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Mappings",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/mappings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Mapping By Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/mapping/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mapping",
+						"1"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Mapping",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DocumentMapping>\r\n    <id>1</id>\r\n    <documentName>More Books</documentName>\r\n    <documentType>XML</documentType>\r\n    <expression1>\r\n        <id>1</id>\r\n        <expression>bookstore/book[@category='cooking']/title</expression>\r\n        <expectedValue>Everyday Bavarian</expectedValue>\r\n        <expectedType>STRING</expectedType>\r\n    </expression1>\r\n    <expression2>\r\n        <id>2</id>\r\n        <expression>bookstore/book[@category='children']/title</expression>\r\n        <expectedValue>Harry Potter</expectedValue>\r\n        <expectedType>STRING</expectedType>\r\n    </expression2>\r\n    <expression3>\r\n        <id>3</id>\r\n        <expression>bookstore/book[@category='children']/year</expression>\r\n        <expectedValue>2010</expectedValue>\r\n        <expectedType>NUMBER</expectedType>\r\n    </expression3>\r\n    <expression4>\r\n        <id>4</id>\r\n        <expression>bookstore/book[@category='cooking']/available</expression>\r\n        <expectedValue>false</expectedValue>\r\n        <expectedType>BOOLEAN</expectedType>\r\n    </expression4>\r\n    <expression5>\r\n        <id>5</id>\r\n        <expression>bookstore/book[@category='children']/price</expression>\r\n        <expectedValue>33.99</expectedValue>\r\n        <expectedType>NUMBER</expectedType>\r\n    </expression5>\r\n</DocumentMapping>"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/mapping/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mapping",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Mapping",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DocumentMapping>\r\n    <documentName>Books</documentName>\r\n    <documentType>XML</documentType>\r\n    <expression1>\r\n        <expression>bookstore/book[@category='cooking']/title</expression>\r\n        <expectedValue>Everyday Italian</expectedValue>\r\n        <expectedType>STRING</expectedType>\r\n    </expression1>\r\n    <expression2>\r\n        <expression>bookstore/book[@category='children']/title</expression>\r\n        <expectedValue>Harry Potter</expectedValue>\r\n        <expectedType>STRING</expectedType>\r\n    </expression2>\r\n    <expression3>\r\n        <expression>bookstore/book[@category='children']/year</expression>\r\n        <expectedValue>2005</expectedValue>\r\n        <expectedType>NUMBER</expectedType>\r\n    </expression3>\r\n    <expression4>\r\n        <expression>bookstore/book[@category='cooking']/available</expression>\r\n        <expectedValue>true</expectedValue>\r\n        <expectedType>BOOLEAN</expectedType>\r\n    </expression4>\r\n    <expression5>\r\n        <expression>bookstore/book[@category='children']/price</expression>\r\n        <expectedValue>29.99</expectedValue>\r\n        <expectedType>NUMBER</expectedType>\r\n    </expression5>\r\n</DocumentMapping>"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/mapping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mapping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Mapping",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/mapping/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"mapping",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
