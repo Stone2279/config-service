@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -12,10 +13,17 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO: XML Namespaces!!!
+ */
 public class XPathEvaluator {
 
     private XPathFactory xPathFactory = XPathFactory.newInstance();
     private DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+
+    public static void validateXPath(String exp) throws XPathExpressionException {
+        XPathFactory.newInstance().newXPath().compile(exp);
+    }
 
     public Optional<String> matches(final InputStream is, List<DocumentRouting> routings) throws InvalidDocumentException, XPathExpressionException {
 
@@ -43,13 +51,8 @@ public class XPathEvaluator {
             return true;
         }
 
-        XPathExpression xPathExpression = compileXpathExpression(exp);
-
-        return true;
-    }
-
-    private XPathExpression compileXpathExpression(final String exp) throws XPathExpressionException {
-        return xPathFactory.newXPath().compile(exp);
+        XPathExpression xPathExpression = xPathFactory.newXPath().compile(exp);
+        return (Boolean) xPathExpression.evaluate(xml, XPathConstants.BOOLEAN);
     }
 
     private Document parse(final InputStream is) throws InvalidDocumentException {
