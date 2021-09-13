@@ -1,23 +1,26 @@
-package de.stone.config.service.entity;
+package de.stone.config.service.routing.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="DOCUMENT_MAPPING")
-public class DocumentMapping {
+@Table(name="DOCUMENT_ROUTING")
+public class DocumentRouting {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documentmapping_id_seq")
-    @SequenceGenerator(name = "documentmapping_id_seq", sequenceName = "documentmapping_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DOCUMENT_ROUTING_ID_SEQ")
+    @SequenceGenerator(name = "DOCUMENT_ROUTING_ID_SEQ", sequenceName = "DOCUMENT_ROUTING_ID_SEQ")
     private Long id;
 
     @Column(name = "DOCUMENT_NAME", length = 512, nullable = false)
     private String documentName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="DOCUMENT_TYPE")
+    @Column(name="DOCUMENT_TYPE", nullable = false)
     private DocumentType documentType;
+
+    @Column(name = "DESTINATION", length = 512, nullable = false)
+    private String destination;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "EXPRESSION_1", referencedColumnName = "id")
@@ -39,14 +42,15 @@ public class DocumentMapping {
     @JoinColumn(name = "EXPRESSION_5", referencedColumnName = "id")
     private Expression expression5;
 
-    public DocumentMapping() {
+    public DocumentRouting() {
     }
 
-    private DocumentMapping(String documentName, DocumentType documentType, Expression expression1,
-                           Expression expression2, Expression expression3, Expression expression4,
-                           Expression expression5) {
+    private DocumentRouting(String documentName, DocumentType documentType, String destination, Expression expression1,
+                            Expression expression2, Expression expression3, Expression expression4,
+                            Expression expression5) {
         this.documentName = documentName;
         this.documentType = documentType;
+        this.destination = destination;
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.expression3 = expression3;
@@ -72,6 +76,14 @@ public class DocumentMapping {
 
     public DocumentType getDocumentType() {
         return documentType;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public void setDocumentType(DocumentType documentType) {
@@ -118,25 +130,76 @@ public class DocumentMapping {
         this.expression5 = expression5;
     }
 
+    public void merge(DocumentRouting mapping) {
+
+        if(mapping == null) {
+            return;
+        }
+
+        this.documentName = mapping.getDocumentName();
+        this.documentType = mapping.getDocumentType();
+        this.destination = mapping.getDestination();
+
+        if(this.expression1 != null) {
+            this.expression1.merge(mapping.getExpression1());
+        }
+        else {
+            this.expression1 = mapping.getExpression1();
+        }
+
+        if(this.expression2 != null) {
+            this.expression2.merge(mapping.getExpression2());
+        }
+        else {
+            this.expression2 = mapping.getExpression2();
+        }
+
+        if(this.expression3 != null) {
+            this.expression3.merge(mapping.getExpression3());
+        }
+        else {
+            this.expression3 = mapping.getExpression3();
+        }
+
+        if(this.expression4 != null) {
+            this.expression4.merge(mapping.getExpression4());
+        }
+        else {
+            this.expression4 = mapping.getExpression4();
+        }
+
+        if(this.expression5 != null) {
+            this.expression5.merge(mapping.getExpression5());
+        }
+        else {
+            this.expression5 = mapping.getExpression5();
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DocumentMapping that = (DocumentMapping) o;
-        return Objects.equals(id, that.id) && Objects.equals(documentName, that.documentName) && documentType == that.documentType && Objects.equals(expression1, that.expression1) && Objects.equals(expression2, that.expression2) && Objects.equals(expression3, that.expression3) && Objects.equals(expression4, that.expression4) && Objects.equals(expression5, that.expression5);
+        DocumentRouting that = (DocumentRouting) o;
+        return Objects.equals(id, that.id) && Objects.equals(documentName, that.documentName)
+                && documentType == that.documentType && Objects.equals(expression1, that.expression1)
+                && Objects.equals(expression2, that.expression2) && Objects.equals(expression3, that.expression3)
+                && Objects.equals(expression4, that.expression4) && Objects.equals(expression5, that.expression5);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, documentName, documentType, expression1, expression2, expression3, expression4, expression5);
+        return Objects.hash(id, documentName, documentType, expression1, expression2,
+                expression3, expression4, expression5);
     }
 
     @Override
     public String toString() {
-        return "DocumentMapping{" +
+        return "DocumentRouting{" +
                 "id=" + id +
                 ", documentName='" + documentName + '\'' +
                 ", documentType=" + documentType +
+                ", destination='" + destination + '\'' +
                 ", expression1=" + expression1 +
                 ", expression2=" + expression2 +
                 ", expression3=" + expression3 +
@@ -149,6 +212,7 @@ public class DocumentMapping {
 
         private String documentName;
         private DocumentType documentType;
+        private String destination;
         private Expression expression1;
         private Expression expression2;
         private Expression expression3;
@@ -162,6 +226,11 @@ public class DocumentMapping {
 
         public Builder documentType(DocumentType documentType) {
             this.documentType = documentType;
+            return this;
+        }
+
+        public Builder destination(String destination) {
+            this.destination = destination;
             return this;
         }
 
@@ -190,8 +259,8 @@ public class DocumentMapping {
             return this;
         }
 
-        public DocumentMapping build() {
-            return new DocumentMapping(this.documentName, this.documentType,
+        public DocumentRouting build() {
+            return new DocumentRouting(this.documentName, this.documentType, this.destination,
                     this.expression1, this.expression2, this.expression3, this.expression4, this.expression5);
         }
     }

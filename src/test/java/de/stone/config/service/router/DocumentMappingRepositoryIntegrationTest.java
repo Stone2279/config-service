@@ -1,15 +1,15 @@
 package de.stone.config.service.router;
 
-import de.stone.config.service.entity.DocumentMapping;
-import de.stone.config.service.entity.DocumentType;
-import de.stone.config.service.entity.ExpectedType;
-import de.stone.config.service.entity.Expression;
+import de.stone.config.service.routing.control.DocumentRoutingRepository;
+import de.stone.config.service.routing.entity.DocumentRouting;
+import de.stone.config.service.routing.entity.DocumentType;
+import de.stone.config.service.routing.entity.ExpectedType;
+import de.stone.config.service.routing.entity.Expression;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class DocumentMappingRepositoryIntegrationTest {
 
     @Autowired
-    private DocumentMappingRepository repository;
+    private DocumentRoutingRepository repository;
 
     @BeforeEach
     public void setup() {
@@ -35,10 +35,10 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void findByDocumentName() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
+        List<DocumentRouting> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
-        DocumentMapping book = books.get(0);
+        DocumentRouting book = books.get(0);
         assertEquals("Books", book.getDocumentName());
         assertEquals(DocumentType.XML, book.getDocumentType());
 
@@ -71,10 +71,10 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void updateDocumentMapping() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
+        List<DocumentRouting> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
-        DocumentMapping book = books.get(0);
+        DocumentRouting book = books.get(0);
         book.setDocumentName("Best Books");
         book.getExpression1().setExpectedValue("Everyday Bavarian");
         book.setExpression5(null);
@@ -93,7 +93,7 @@ class DocumentMappingRepositoryIntegrationTest {
     @Test
     public void deleteDocumentMapping() {
 
-        List<DocumentMapping> books = repository.findByDocumentName("Books").get();
+        List<DocumentRouting> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
         repository.delete(books.get(0));
@@ -104,7 +104,7 @@ class DocumentMappingRepositoryIntegrationTest {
 
     private void createMapping() {
 
-        DocumentMapping mapping1 = new DocumentMapping.Builder()
+        DocumentRouting mapping1 = new DocumentRouting.Builder()
                 .documentName("Books")
                 .documentType(DocumentType.XML)
                 .expression1(new Expression("bookstore/book[@category='cooking']/title", "Everyday Italian", ExpectedType.STRING))

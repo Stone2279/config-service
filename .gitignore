@@ -2,3 +2,4 @@
 /config-service.iml
 /target/
 /db/data.mv.db
+/db/data.trace.db

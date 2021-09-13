@@ -1,7 +1,6 @@
-package de.stone.config.service.entity;
+package de.stone.config.service.routing.entity;
 
 import javax.persistence.*;
-import javax.xml.xpath.XPathConstants;
 import java.util.Objects;
 
 @Entity
@@ -9,8 +8,8 @@ import java.util.Objects;
 public class Expression {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expression_id_seq")
-    @SequenceGenerator(name = "expression_id_seq", sequenceName = "expression_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EXPRESSION_ID_SEQ")
+    @SequenceGenerator(name = "EXPRESSION_ID_SEQ", sequenceName = "EXPRESSION_ID_SEQ")
     private Long id;
 
     @Column(name="EXP")
@@ -63,6 +62,18 @@ public class Expression {
 
     public void setExpectedType(ExpectedType expectedType) {
         this.expectedType = expectedType;
+    }
+
+    public void merge(Expression exp) {
+
+        if(exp == null) {
+            return;
+        }
+
+        this.expression = exp.getExpression();
+        this.expectedValue = exp.getExpectedValue();
+        this.expectedType = exp.getExpectedType();
+
     }
 
     @Override

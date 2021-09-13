@@ -1,4 +1,4 @@
-package de.stone.config.service.entity;
+package de.stone.config.service.routing.entity;
 
 public enum ExpectedType {
 

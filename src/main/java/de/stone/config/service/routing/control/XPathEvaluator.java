@@ -1,4 +1,4 @@
-package de.stone.config.service.router;
+package de.stone.config.service.routing.control;
 
 import org.w3c.dom.Document;
 

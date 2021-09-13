@@ -1,4 +1,4 @@
-package de.stone.config.service.router;
+package de.stone.config.service.routing.control;
 
 public class InvalidDocumentException extends Exception {
 
