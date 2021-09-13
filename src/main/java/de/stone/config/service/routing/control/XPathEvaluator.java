@@ -1,34 +1,55 @@
 package de.stone.config.service.routing.control;
 
+import de.stone.config.service.routing.entity.DocumentRouting;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 public class XPathEvaluator {
 
-    XPath xPath = XPathFactory.newInstance().newXPath();
+    private XPathFactory xPathFactory = XPathFactory.newInstance();
+    private DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
-    public boolean matches(final InputStream is, List<String> expressions) throws InvalidDocumentException, XPathExpressionException {
+    public Optional<String> matches(final InputStream is, List<DocumentRouting> routings) throws InvalidDocumentException, XPathExpressionException {
 
-        Document doc = parse(is);
+        Document xml = parse(is);
 
+        for (DocumentRouting routing : routings) {
 
-        for (String expression : expressions) {
+            boolean matches = evaluate(xml, routing.getExpression1());
+            matches = evaluate(xml, routing.getExpression2());
+            matches = evaluate(xml, routing.getExpression3());
+            matches = evaluate(xml, routing.getExpression4());
+            matches = evaluate(xml, routing.getExpression5());
 
+            if(matches) {
+                return Optional.of(routing.getDestination());
+            }
         }
 
-        return false;
+        return Optional.empty();
+    }
+
+    private boolean evaluate(Document xml, String exp) throws XPathExpressionException {
+
+        if(exp == null) {
+            return true;
+        }
+
+        XPathExpression xPathExpression = compileXpathExpression(exp);
+
+        return true;
     }
 
     private XPathExpression compileXpathExpression(final String exp) throws XPathExpressionException {
-        return xPath.compile(exp);
+        return xPathFactory.newXPath().compile(exp);
     }
 
     private Document parse(final InputStream is) throws InvalidDocumentException {
@@ -38,12 +59,11 @@ public class XPathEvaluator {
         }
 
         try {
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             return builder.parse(is);
         }
         catch (final Exception e) {
-            throw new InvalidDocumentException("Invalid XML document", e);
+            throw new InvalidDocumentException("Unparsable XML document", e);
         }
     }
 }

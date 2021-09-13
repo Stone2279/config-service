@@ -3,8 +3,6 @@ package de.stone.config.service.router;
 import de.stone.config.service.routing.control.DocumentRoutingRepository;
 import de.stone.config.service.routing.entity.DocumentRouting;
 import de.stone.config.service.routing.entity.DocumentType;
-import de.stone.config.service.routing.entity.ExpectedType;
-import de.stone.config.service.routing.entity.Expression;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ class DocumentMappingRepositoryIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        createMapping();
+        createRouting();
     }
 
     @AfterEach
@@ -39,44 +37,25 @@ class DocumentMappingRepositoryIntegrationTest {
         assertEquals(1, books.size());
 
         DocumentRouting book = books.get(0);
+
         assertEquals("Books", book.getDocumentName());
         assertEquals(DocumentType.XML, book.getDocumentType());
-
-        Expression exp1 = book.getExpression1();
-        assertEquals("bookstore/book[@category='cooking']/title", exp1.getExpression());
-        assertEquals("Everyday Italian", exp1.getExpectedValue());
-        assertEquals(ExpectedType.STRING, exp1.getExpectedType());
-
-        Expression exp2 = book.getExpression2();
-        assertEquals("bookstore/book[@category='children']/title", exp2.getExpression());
-        assertEquals("Harry Potter", exp2.getExpectedValue());
-        assertEquals(ExpectedType.STRING, exp2.getExpectedType());
-
-        Expression exp3 = book.getExpression3();
-        assertEquals("bookstore/book[@category='children']/year", exp3.getExpression());
-        assertEquals("2005", exp3.getExpectedValue());
-        assertEquals(ExpectedType.NUMBER, exp3.getExpectedType());
-
-        Expression exp4 = book.getExpression4();
-        assertEquals("bookstore/book[@category='cooking']/available", exp4.getExpression());
-        assertEquals("true", exp4.getExpectedValue());
-        assertEquals(ExpectedType.BOOLEAN, exp4.getExpectedType());
-
-        Expression exp5 = book.getExpression5();
-        assertEquals("bookstore/book[@category='children']/price", exp5.getExpression());
-        assertEquals("29.99", exp5.getExpectedValue());
-        assertEquals(ExpectedType.NUMBER, exp5.getExpectedType());
+        assertEquals("bookstore/book[@category='cooking']/title", book.getExpression1());
+        assertEquals("bookstore/book[@category='children']/title", book.getExpression2());
+        assertEquals("bookstore/book[@category='children']/year", book.getExpression3());
+        assertEquals("bookstore/book[@category='cooking']/available", book.getExpression4());
+        assertEquals("bookstore/book[@category='children']/price", book.getExpression5());
     }
 
     @Test
-    public void updateDocumentMapping() {
+    public void updateDocumentRouting() {
 
         List<DocumentRouting> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
 
         DocumentRouting book = books.get(0);
         book.setDocumentName("Best Books");
-        book.getExpression1().setExpectedValue("Everyday Bavarian");
+        book.setExpression1("bookstore/book[@category='baking']/title");
         book.setExpression5(null);
 
         repository.saveAndFlush(book);
@@ -86,12 +65,12 @@ class DocumentMappingRepositoryIntegrationTest {
 
         book = books.get(0);
         assertEquals("Best Books", book.getDocumentName());
-        assertEquals("Everyday Bavarian", book.getExpression1().getExpectedValue());
+        assertEquals("bookstore/book[@category='baking']/title", book.getExpression1());
         assertNull(book.getExpression5());
     }
 
     @Test
-    public void deleteDocumentMapping() {
+    public void deleteDocumentRouting() {
 
         List<DocumentRouting> books = repository.findByDocumentName("Books").get();
         assertEquals(1, books.size());
@@ -102,19 +81,20 @@ class DocumentMappingRepositoryIntegrationTest {
         assertEquals(0, books.size());
     }
 
-    private void createMapping() {
+    private void createRouting() {
 
-        DocumentRouting mapping1 = new DocumentRouting.Builder()
+        DocumentRouting routing = new DocumentRouting.Builder()
                 .documentName("Books")
                 .documentType(DocumentType.XML)
-                .expression1(new Expression("bookstore/book[@category='cooking']/title", "Everyday Italian", ExpectedType.STRING))
-                .expression2(new Expression("bookstore/book[@category='children']/title", "Harry Potter", ExpectedType.STRING))
-                .expression3(new Expression("bookstore/book[@category='children']/year", "2005", ExpectedType.NUMBER))
-                .expression4(new Expression("bookstore/book[@category='cooking']/available", "true", ExpectedType.BOOLEAN))
-                .expression5(new Expression("bookstore/book[@category='children']/price", "29.99", ExpectedType.NUMBER))
+                .destination("Bavaria")
+                .expression1("bookstore/book[@category='cooking']/title")
+                .expression2("bookstore/book[@category='children']/title")
+                .expression3("bookstore/book[@category='children']/year")
+                .expression4("bookstore/book[@category='cooking']/available")
+                .expression5("bookstore/book[@category='children']/price")
                 .build();
 
-        repository.saveAndFlush(mapping1);
+        repository.saveAndFlush(routing);
     }
 
     private void deleteAll() {
