@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:bookstore xmlns:ns2="http://bookstore.com/schemes">
+
+    <ns2:book category="cooking">
+        <ns2:title lang="en">Everyday Italian</ns2:title>
+        <ns2:author>Giada De Laurentiis</ns2:author>
+        <ns2:year>2005</ns2:year>
+        <ns2:price>30.00</ns2:price>
+        <ns2:available>false</ns2:available>
+    </ns2:book>
+
+    <ns2:book category="children">
+        <ns2:title lang="en">Harry Potter</ns2:title>
+        <ns2:author>J K. Rowling</ns2:author>
+        <ns2:year>2005</ns2:year>
+        <ns2:price>29.99</ns2:price>
+        <ns2:available>true</ns2:available>
+    </ns2:book>
+
+</ns2:bookstore>
