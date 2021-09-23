@@ -32,7 +32,7 @@ public class LocationMappingAPI {
 	}
 	
 	@GetMapping(value = "location/{alias}/{stage}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public LocationMapping findMapping(@PathVariable String alias, @PathVariable String stage) {
+	public LocationMapping findLocationMapping(@PathVariable String alias, @PathVariable String stage) {
 		
 		return repository.findById(new LocationMappingId(alias, stage))
 				.orElseThrow(() -> new RoutingNotFoundException(alias + "/" + stage));
@@ -55,7 +55,7 @@ public class LocationMappingAPI {
         return repository.save(locationMapping);
     }
 	
-	@DeleteMapping("location/{id}")
+	@DeleteMapping("location/{alias}/{stage}")
     public void deleteMapping(@PathVariable String alias, @PathVariable String stage) {
 
         repository.deleteById(new LocationMappingId(alias, stage));

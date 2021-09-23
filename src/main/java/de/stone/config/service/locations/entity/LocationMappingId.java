@@ -1,6 +1,7 @@
 package de.stone.config.service.locations.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class LocationMappingId implements Serializable {
 
@@ -32,38 +33,23 @@ public class LocationMappingId implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
-		result = prime * result + ((stage == null) ? 0 : stage.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		LocationMappingId that = (LocationMappingId) o;
+		return Objects.equals(alias, that.alias) && Objects.equals(stage, that.stage);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LocationMappingId other = (LocationMappingId) obj;
-		if (alias == null) {
-			if (other.alias != null)
-				return false;
-		} else if (!alias.equals(other.alias))
-			return false;
-		if (stage == null) {
-			if (other.stage != null)
-				return false;
-		} else if (!stage.equals(other.stage))
-			return false;
-		return true;
+	public int hashCode() {
+		return Objects.hash(alias, stage);
 	}
 
 	@Override
 	public String toString() {
-		return "LocationMappingId [alias=" + alias + ", stage=" + stage + "]";
+		return "LocationMappingId{" +
+				"alias='" + alias + '\'' +
+				", stage='" + stage + '\'' +
+				'}';
 	}
 }

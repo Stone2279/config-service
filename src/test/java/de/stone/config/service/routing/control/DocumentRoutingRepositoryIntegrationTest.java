@@ -1,4 +1,4 @@
-package de.stone.config.service.router;
+package de.stone.config.service.routing.control;
 
 import de.stone.config.service.routing.control.DocumentRoutingRepository;
 import de.stone.config.service.routing.entity.DocumentRouting;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
-class DocumentMappingRepositoryIntegrationTest {
+class DocumentRoutingRepositoryIntegrationTest {
 
     @Autowired
     private DocumentRoutingRepository repository;

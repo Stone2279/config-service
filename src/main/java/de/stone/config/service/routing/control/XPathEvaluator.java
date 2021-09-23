@@ -58,9 +58,7 @@ public class XPathEvaluator implements Evaluator {
         	XPath xpath = xPathFactory.newXPath();
             xpath.setNamespaceContext(new NamespaceResolver(xml));
             XPathExpression xPathExpression = xpath.compile(exp);
-            boolean result = (Boolean) xPathExpression.evaluate(xml, XPathConstants.BOOLEAN);
-
-            return result;
+            return (Boolean) xPathExpression.evaluate(xml, XPathConstants.BOOLEAN);
         }
         catch(Exception e) {
         	throw new InvalidRoutingException("Invalid mapping: " + exp, e);
@@ -83,7 +81,7 @@ public class XPathEvaluator implements Evaluator {
         }
     }
 
-    class NamespaceResolver implements NamespaceContext
+    private static class NamespaceResolver implements NamespaceContext
     {
         private Document sourceDocument;
 

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "LOCATION_MAPPING")
@@ -53,32 +54,24 @@ public class LocationMapping {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		LocationMapping that = (LocationMapping) o;
+		return Objects.equals(alias, that.alias) && Objects.equals(stage, that.stage);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LocationMapping other = (LocationMapping) obj;
-		if (alias == null) {
-			if (other.alias != null)
-				return false;
-		} else if (!alias.equals(other.alias))
-			return false;
-		return true;
+	public int hashCode() {
+		return Objects.hash(alias, stage);
 	}
 
 	@Override
 	public String toString() {
-		return "LocationMapping [alias=" + alias + ", destination=" + destination + ", stage=" + stage + "]";
+		return "LocationMapping{" +
+				"alias='" + alias + '\'' +
+				", stage='" + stage + '\'' +
+				", destination='" + destination + '\'' +
+				'}';
 	}
 }
