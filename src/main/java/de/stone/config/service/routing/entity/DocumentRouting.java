@@ -1,6 +1,11 @@
 package de.stone.config.service.routing.entity;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -41,6 +46,12 @@ public class DocumentRouting {
     @Column(name="EXPRESSION_5")
     @Lob
     private String expression5;
+    
+    @CreationTimestamp
+    private Date created;
+    
+    @UpdateTimestamp
+    private Date updated;
 
     public DocumentRouting() {
     }
@@ -129,7 +140,23 @@ public class DocumentRouting {
         this.expression5 = expression5;
     }
 
-    public void merge(DocumentRouting mapping) {
+    public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public void merge(DocumentRouting mapping) {
 
         if(mapping == null) {
             return;

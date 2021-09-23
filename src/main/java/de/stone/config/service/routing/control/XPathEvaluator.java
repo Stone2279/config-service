@@ -1,6 +1,8 @@
 package de.stone.config.service.routing.control;
 
 import de.stone.config.service.routing.entity.DocumentRouting;
+
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 
 import javax.xml.XMLConstants;
@@ -16,7 +18,8 @@ import java.util.Optional;
 /**
  * TODO: XML Namespaces!!!
  */
-public class XPathEvaluator {
+@Component
+public class XPathEvaluator implements Evaluator {
 
     private XPathFactory xPathFactory = XPathFactory.newInstance();
     private DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -25,11 +28,7 @@ public class XPathEvaluator {
         builderFactory.setNamespaceAware(true);
     }
 
-    public static void validateXPath(String exp) throws XPathExpressionException {
-        XPathFactory.newInstance().newXPath().compile(exp);
-    }
-
-    public Optional<String> matches(final InputStream is, List<DocumentRouting> routings) throws InvalidDocumentException, XPathExpressionException {
+    public Optional<String> matches(final InputStream is, List<DocumentRouting> routings) {
 
         Document xml = parse(is);
 
@@ -49,18 +48,24 @@ public class XPathEvaluator {
         return Optional.empty();
     }
 
-    private boolean evaluate(Document xml, String exp) throws XPathExpressionException {
+    private boolean evaluate(Document xml, String exp) {
 
         if(exp == null) {
             return true;
         }
 
-        XPath xpath = xPathFactory.newXPath();
-        xpath.setNamespaceContext(new NamespaceResolver(xml));
-        XPathExpression xPathExpression = xpath.compile(exp);
-        boolean result = (Boolean) xPathExpression.evaluate(xml, XPathConstants.BOOLEAN);
+        try {
+        	XPath xpath = xPathFactory.newXPath();
+            xpath.setNamespaceContext(new NamespaceResolver(xml));
+            XPathExpression xPathExpression = xpath.compile(exp);
+            boolean result = (Boolean) xPathExpression.evaluate(xml, XPathConstants.BOOLEAN);
 
-        return result;
+            return result;
+        }
+        catch(Exception e) {
+        	throw new InvalidRoutingException("Invalid mapping: " + exp, e);
+        }
+        
     }
 
     private Document parse(final InputStream is) throws InvalidDocumentException {
@@ -99,8 +104,7 @@ public class XPathEvaluator {
             return sourceDocument.lookupPrefix(namespaceURI);
         }
 
-        @SuppressWarnings("rawtypes")
-        public Iterator getPrefixes(String namespaceURI) {
+        public Iterator<String> getPrefixes(String namespaceURI) {
             return null;
         }
     }
